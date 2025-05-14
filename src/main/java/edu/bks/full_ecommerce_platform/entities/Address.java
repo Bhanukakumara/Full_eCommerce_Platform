@@ -2,6 +2,7 @@ package edu.bks.full_ecommerce_platform.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,11 @@ public class Address {
     @Column(name = "postal_code", nullable = false)
     @NotBlank(message = "Postal code is required")
     private String postalCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", nullable = false)
+    @NotNull(message = "Country is required")
+    private Country country;
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserAddress> userAddresses;
