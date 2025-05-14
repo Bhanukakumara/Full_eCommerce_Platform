@@ -1,0 +1,13 @@
+package edu.bks.full_ecommerce_platform.entities;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "payment_type")
+public class PaymentType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String value;
+}
