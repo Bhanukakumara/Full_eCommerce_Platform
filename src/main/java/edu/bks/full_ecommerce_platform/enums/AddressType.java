@@ -4,8 +4,9 @@ public enum AddressType {
     SHIPPING,
     BILLING,
     BOTH,
-    WAREHOUSE,
-    STORE,
-    HEADQUARTERS,
+    GIFT,
+    RETURN,
+    OFFICE,
+    HOME,
     OTHER
 }
