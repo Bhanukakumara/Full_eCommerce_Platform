@@ -1,12 +1,10 @@
 package edu.bks.full_ecommerce_platform.entities;
 
 import edu.bks.full_ecommerce_platform.enums.AccountStatus;
+import edu.bks.full_ecommerce_platform.enums.Gender;
 import edu.bks.full_ecommerce_platform.enums.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,39 +30,55 @@ public class User {
     private Long id;
 
     @NaturalId(mutable = true)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 255)
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
     private String email;
 
-    @Column(nullable = false)
-    @Size(min = 3, max = 50, message = "First name must be between 3 and 50 characters")
+    @Column(name = "first_name", nullable = false, length = 50)
+    @NotBlank(message = "First name is required")
+    @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     private String firstName;
 
-    @Column(nullable = false)
-    @Size(min = 3, max = 50, message = "Last name must be between 3 and 50 characters")
+    @Column(name = "middle_name", length = 50)
+    @Size(max = 50, message = "Middle name cannot exceed 50 characters")
+    private String middleName;
+
+    @Column(name = "last_name", nullable = false, length = 50)
+    @NotBlank(message = "Last name is required")
+    @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     private String lastName;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "display_name", length = 100)
+    @Size(max = 100, message = "Display name cannot exceed 100 characters")
+    private String displayName;
+
+    @Column(name = "profile_picture", columnDefinition = "TEXT")
     private String profilePicture;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false, length = 255)
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    @Column(unique = true)
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone Number should be valid")
+    @Column(name = "phone_number", unique = true, length = 20)
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number should be valid")
     private String phoneNumber;
 
+    @Column(name = "date_of_birth")
+    @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
     private UserRole role;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "account_status", nullable = false, length = 20)
     private AccountStatus accountStatus;
 
     @CreationTimestamp
@@ -74,6 +89,18 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "deleted_by")
+    private String deletedBy;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserAddress> addresses;
+    private List<UserAddress> addresses = new ArrayList<>();
 }
