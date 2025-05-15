@@ -2,6 +2,9 @@ package edu.bks.full_ecommerce_platform.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "payment_type")
 public class PaymentType {
@@ -10,4 +13,7 @@ public class PaymentType {
     private Long id;
 
     private String value;
+
+    @OneToMany(mappedBy = "paymentType", cascade = CascadeType.ALL)
+    private Set<UserPaymentMethod> userPaymentMethods = new HashSet<UserPaymentMethod>();
 }

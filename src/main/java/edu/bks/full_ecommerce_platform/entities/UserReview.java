@@ -9,7 +9,14 @@ public class UserReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long orderedProductId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id" , nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ordered_product_id", nullable = false)
+    private OrderLine orderLine;
+
     private Integer rating;
     private String comment;
 }

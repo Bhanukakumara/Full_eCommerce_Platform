@@ -11,8 +11,14 @@ public class OrderLine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long productItemId;
-    private Long orderId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_item_id", nullable = false)
+    private ProductItem productItem;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id", nullable = false)
+    private ShopOrder shopOrder;
+
     private Long quantity;
     private BigDecimal price;
 }

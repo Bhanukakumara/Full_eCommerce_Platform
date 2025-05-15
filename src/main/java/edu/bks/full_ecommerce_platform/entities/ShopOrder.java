@@ -1,10 +1,10 @@
 package edu.bks.full_ecommerce_platform.entities;
 
+import edu.bks.full_ecommerce_platform.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.ToString;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,12 +14,27 @@ public class ShopOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
-    private Long paymentMethodId;
-    private Long shippingAddressId;
-    private Long shippingMethodId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "payment_method_id", nullable = false)
+    private UserPaymentMethod userPaymentMethod;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipping_address_id", nullable = false)
+    @NotNull(message = "Address is required")
+    private Address address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipping_method", nullable = false)
+    private ShippingMethod shippingMethod;
+
+    @Column(name = "order_total", nullable = false, precision = 10, scale = 2)
     private BigDecimal orderTotal;
-    private Long orderStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status", nullable = false)
+    private OrderStatus orderStatus;
 }
 

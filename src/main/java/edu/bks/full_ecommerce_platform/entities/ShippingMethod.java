@@ -3,6 +3,8 @@ package edu.bks.full_ecommerce_platform.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "shpinng_method")
@@ -13,4 +15,7 @@ public class ShippingMethod {
 
     private String name;
     private BigDecimal price;
+
+    @OneToMany(mappedBy = "shippingMethod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ShopOrder> shopOrders = new HashSet<ShopOrder>();
 }

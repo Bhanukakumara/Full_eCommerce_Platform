@@ -84,4 +84,7 @@ public class Address {
     @JoinColumn(name = "country_id", nullable = false)
     @NotNull(message = "Country is required")
     private Country country;
+
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    private Set<ShopOrder> shopOrders = new HashSet<>();
 }
