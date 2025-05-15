@@ -19,6 +19,7 @@ public class ShopOrder {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_method_id", nullable = false)
+    @NotNull(message = "Payment method is required")
     private UserPaymentMethod userPaymentMethod;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,6 +29,7 @@ public class ShopOrder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipping_method", nullable = false)
+    @NotNull(message = "Shipping Method is required")
     private ShippingMethod shippingMethod;
 
     @Column(name = "order_total", nullable = false, precision = 10, scale = 2)

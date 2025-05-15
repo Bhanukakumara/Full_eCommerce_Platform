@@ -98,4 +98,7 @@ public class ProductItem {
 
     @OneToMany(mappedBy = "productItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ShoppingCartItem> shoppingCartItems = new HashSet<>();
+
+    @OneToMany(mappedBy = "productItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<OrderLine> orderLines = new HashSet<>();
 }

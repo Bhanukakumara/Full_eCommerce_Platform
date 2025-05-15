@@ -25,16 +25,16 @@ public class ProductCategory {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Product> products;
+    private Set<Product> products = new HashSet<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Variation> variations;
+    private Set<Variation> variations = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
             name = "promotion_category",
-            joinColumns = @JoinColumn(name = "promotion_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            joinColumns = @JoinColumn(name = "promotion_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "category_id", nullable = false)
     )
     private Set<Promotion> promotions = new HashSet<>();
 }

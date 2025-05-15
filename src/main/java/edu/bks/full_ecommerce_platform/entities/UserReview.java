@@ -1,9 +1,18 @@
 package edu.bks.full_ecommerce_platform.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user_revires")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,10 +20,12 @@ public class UserReview {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" , nullable = false)
+    @NotNull(message = "User is required")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ordered_product_id", nullable = false)
+    @NotNull(message = "Order is required")
     private OrderLine orderLine;
 
     private Integer rating;

@@ -2,6 +2,10 @@ package edu.bks.full_ecommerce_platform.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -9,6 +13,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user_payment_method")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserPaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
