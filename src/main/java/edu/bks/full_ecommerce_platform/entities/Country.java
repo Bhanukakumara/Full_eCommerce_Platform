@@ -12,8 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "countries")
@@ -52,5 +51,5 @@ public class Country {
     private String updatedBy;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
-    private Set<Address> addresses = new HashSet<>();
+    private List<Address> addresses;
 }

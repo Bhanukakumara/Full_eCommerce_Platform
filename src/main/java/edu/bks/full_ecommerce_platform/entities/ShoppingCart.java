@@ -22,10 +22,10 @@ public class ShoppingCart {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull(message = "User is required")
     private User user;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ShoppingCartItem> shoppingCartItems = new HashSet<ShoppingCartItem>();
+    private Set<ShoppingCartItem> shoppingCartItems = new HashSet<>();
 }

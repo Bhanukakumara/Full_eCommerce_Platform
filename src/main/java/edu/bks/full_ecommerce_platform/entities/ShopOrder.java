@@ -3,12 +3,20 @@ package edu.bks.full_ecommerce_platform.entities;
 import edu.bks.full_ecommerce_platform.enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "shop_order")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ShopOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,8 @@
 package edu.bks.full_ecommerce_platform.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.bks.full_ecommerce_platform.enums.AddressType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,12 +28,12 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "unit_number", length = 20)
-    @Size(max = 20, message = "Unit number cannot exceed 20 characters")
+    @Column(name = "unit_number")
+    @Size(message = "Unit number cannot exceed 20 characters")
     private String unitNumber;
 
-    @Column(name = "street_number", length = 20)
-    @Size(max = 20, message = "Street number cannot exceed 20 characters")
+    @Column(name = "street_number")
+    @Size(max = 50, message = "Street number cannot exceed 20 characters")
     private String streetNumber;
 
     @Column(name = "address_line_1", nullable = false, length = 100)
@@ -43,19 +47,18 @@ public class Address {
 
     @Column(name = "city", nullable = false, length = 50)
     @NotBlank(message = "City is required")
-    @Size(min = 2, max = 50, message = "City must be between 2 and 50 characters")
+    @Size(min = 2, max = 100, message = "City must be between 2 and 50 characters")
     private String city;
 
-    @Column(name = "state_province", length = 50)
-    @Size(max = 50, message = "State/Province cannot exceed 50 characters")
+    @Column(name = "state_province", length = 100)
+    @Size(max = 100, message = "State/Province cannot exceed 50 characters")
     private String stateProvince;
 
-    @Column(name = "postal_code", nullable = false, length = 20)
+    @Column(name = "postal_code", nullable = false)
     @NotBlank(message = "Postal code is required")
-    @Size(max = 5, message = "Postal code must be between 3 and 20 characters")
-    private int postalCode;
+    private String postalCode;
 
-    @Column(name = "address_type", length = 20)
+    @Column(name = "address_type")
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
@@ -72,19 +75,22 @@ public class Address {
     private LocalDateTime updatedAt;
 
     @Column(name = "created_by",updatable = false)
-    private Long createdBy;
+    private String createdBy;
 
     @Column(name = "updated_by")
-    private Long updatedBy;
+    private String updatedBy;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserAddress> userAddresses = new HashSet<>();
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<UserAddress> userAddresses;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     @JoinColumn(name = "country_id", nullable = false)
     @NotNull(message = "Country is required")
     private Country country;
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<ShopOrder> shopOrders = new HashSet<>();
 }

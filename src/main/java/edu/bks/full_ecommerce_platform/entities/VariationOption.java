@@ -4,12 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "variation_option")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VariationOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

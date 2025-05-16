@@ -1,5 +1,6 @@
 package edu.bks.full_ecommerce_platform.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,19 +13,24 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "user_address")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAddress {
-    @Id
+    @EmbeddedId
+    private UserAddressID id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    @MapsId("user_id")
     @NotNull(message = "User is required")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", nullable = false)
+    @JsonBackReference
+    @MapsId("address_id")
     @NotNull(message = "Address is required")
     private Address address;
 

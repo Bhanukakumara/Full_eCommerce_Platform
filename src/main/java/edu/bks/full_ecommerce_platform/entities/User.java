@@ -1,5 +1,7 @@
 package edu.bks.full_ecommerce_platform.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import edu.bks.full_ecommerce_platform.enums.AccountStatus;
 import edu.bks.full_ecommerce_platform.enums.Gender;
 import edu.bks.full_ecommerce_platform.enums.UserRole;
@@ -16,6 +18,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,7 +33,7 @@ public class User {
     private Long id;
 
     @NaturalId(mutable = true)
-    @Column(unique = true, nullable = false, length = 255)
+    @Column(name = "email", unique = true, nullable = false)
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
     private String email;
@@ -74,11 +77,11 @@ public class User {
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, length = 20)
+    @Column(name = "role", nullable = false)
     private UserRole role;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_status", nullable = false, length = 20)
+    @Column(name = "account_status", nullable = false)
     private AccountStatus accountStatus;
 
     @CreationTimestamp
@@ -101,8 +104,9 @@ public class User {
     @Column(name = "deleted_by")
     private String deletedBy;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserAddress> addresses = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<UserAddress> userAddresses;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserPaymentMethod> paymentMethods = new HashSet<>();
@@ -110,6 +114,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserReview> reviews = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ShoppingCart shoppingCart;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private ShoppingCart shoppingCart;
 }
