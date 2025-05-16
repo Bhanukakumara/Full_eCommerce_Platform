@@ -1,6 +1,7 @@
 package edu.bks.full_ecommerce_platform.controllers;
 
 import edu.bks.full_ecommerce_platform.dtos.UserDto;
+import edu.bks.full_ecommerce_platform.entities.User;
 import edu.bks.full_ecommerce_platform.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,28 @@ public class UserController {
         }
         else {
             return ResponseEntity.ok(userByPhoneNumber);
+        }
+    }
+
+    @PutMapping("/create")
+    public ResponseEntity<User> createUser(@RequestBody UserDto userDto){
+        User user = userService.createUser(userDto);
+        if (user == null){
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+        }
+        else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
+        UserDto user = userService.updateUser(id, userDto);
+        if (user == null){
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+        }
+        else {
+            return ResponseEntity.ok(user);
         }
     }
 }

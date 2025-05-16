@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,12 +47,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserDto userDto) {
-        return null;
+        if (userRepository.findByEmail(userDto.getEmail()) != null){
+            return userRepository.save(modelMapper.map(userDto, User.class));
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
     public UserDto updateUser(Long userId, UserDto userDetails) {
-        return null;
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()){
+            return null;
+        }
+        else {
+            User user1 = user.get();
+            user1.setEmail(userDetails.getEmail());
+            user1.setFirstName(userDetails.getFirstName());
+            user1.setMiddleName(userDetails.getMiddleName());
+            user1.setLastName(userDetails.getLastName());
+            user1.setDisplayName(userDetails.getDisplayName());
+            user1.setProfilePicture(userDetails.getProfilePicture());
+            user1.setPhoneNumber(userDetails.getPhoneNumber());
+            user1.setDateOfBirth(userDetails.getDateOfBirth());
+            user1.setGender(userDetails.getGender());
+            user1.setUpdatedBy(userDetails.getUpdatedBy());
+            return modelMapper.map(userRepository.save(user1), UserDto.class);
+        }
     }
 
     @Override
